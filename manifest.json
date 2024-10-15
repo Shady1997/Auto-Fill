@@ -1,15 +1,24 @@
 {
   "manifest_version": 3,
-  "name": "Auto-Fill Input Fields",
+  "name": "My Auto Fill Extension",
   "version": "1.0",
-  "description": "Autofills input fields on web pages with random data.",
-  "permissions": ["activeTab", "scripting"],
+  "description": "Auto Fill extension created by Shady Ahmed",
+  "permissions": ["activeTab"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Auto-Fill"
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   },
   "content_scripts": [
     {

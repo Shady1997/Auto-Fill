@@ -41,6 +41,16 @@ function selectRandomOption(selectElement) {
   selectElement.selectedIndex = randomIndex;
 }
 
+// Utility function to generate a random color in hexadecimal
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 // Function to fill all types of input fields with random data
 function fillInputFields() {
   const inputs = document.querySelectorAll('input, textarea, select');
@@ -65,12 +75,31 @@ function fillInputFields() {
     } else if (input.type === 'number') {
       // Random number (10 digits)
       input.value = getRandomNumber(10);
-    } else if (input.type === 'date') {
-      // Random date between 01-01-1900 and 01-01-2000
-      input.value = getRandomDate(new Date(1900, 0, 1), new Date(2000, 0, 1));
     } else if (input.type === 'tel') {
       // Random international phone number
       input.value = getRandomPhoneNumber();
+    } else if (input.type === 'date') {
+      // Random date between 01-01-1900 and 01-01-2000
+      input.value = getRandomDate(new Date(1900, 0, 1), new Date(2000, 0, 1));
+    } else if (input.type === 'datetime-local') {
+      // Random datetime between now and 10 years ago
+      const randomDateTime = new Date(Date.now() - Math.random() * 10 * 365 * 24 * 60 * 60 * 1000);
+      input.value = randomDateTime.toISOString().slice(0, 16); // Format for datetime-local
+    } else if (input.type === 'month') {
+      // Random month between 1900-01 and 2000-12
+      const randomMonth = getRandomDate(new Date(1900, 0, 1), new Date(2000, 0, 1)).slice(0, 7);
+      input.value = randomMonth;
+    } else if (input.type === 'time') {
+      // Random time (HH:MM)
+      const randomTime = `${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`;
+      input.value = randomTime;
+    } else if (input.type === 'url') {
+      // Random URL
+      input.value = `https://www.example${getRandomString(5)}.com`;
+    } else if (input.type === 'week') {
+      // Random week between 1900-W01 and 2000-W52
+      const randomWeek = `${Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900}-W${String(Math.floor(Math.random() * 52) + 1).padStart(2, '0')}`;
+      input.value = randomWeek;
     } else if (input.type === 'checkbox') {
       // Randomly check or uncheck
       input.checked = Math.random() > 0.5;
@@ -83,10 +112,20 @@ function fillInputFields() {
       const min = input.min ? parseInt(input.min) : 0;
       const max = input.max ? parseInt(input.max) : 100;
       input.value = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else if (input.type === 'color') {
+      // Set random color
+      input.value = getRandomColor();
     } else if (input.type === 'file') {
+        const filePath = 'C:\\drivers\\files\\file.png';
+        const imageFile = new File([''], 'file.png', { type: 'image/png' });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(imageFile);
+        input.files = dataTransfer.files;
+
       if (input.accept.includes('image')) {
         // Set file input for image
-        const imageFile = new File([""], "image.jpg", { type: "image/jpeg" });
+        const filePath = 'C:\\drivers\\files\\file.png';
+        const imageFile = new File([''], 'file.png', { type: 'image/png' });
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(imageFile);
         input.files = dataTransfer.files;
@@ -97,9 +136,18 @@ function fillInputFields() {
         dataTransfer.items.add(csvFile);
         input.files = dataTransfer.files;
       }
-    } else if (input.type === 'submit') {
-      // Do nothing for submit inputs
-      console.log('Submit button found, skipping...');
+    } else if (input.type === 'search') {
+      // Random string for search inputs (20 characters)
+      input.value = getRandomString(20);
+    } else if (input.type === 'submit' || input.type === 'reset' || input.type === 'button') {
+      // Do nothing for submit, reset, or button inputs
+      console.log(`${input.type} button found, skipping...`);
+    } else if (input.type === 'hidden') {
+      // Ignore hidden inputs
+      console.log('Hidden input found, skipping...');
+    } else if (input.type === 'image') {
+      // Do nothing for image inputs
+      console.log('Image input found, skipping...');
     }
   });
 }
